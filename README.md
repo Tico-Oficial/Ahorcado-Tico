@@ -6,6 +6,7 @@ Juego del ahorcado multi-jugador
 | **Valor=** | ``{}`` |
 ## Imagenes
 **Vista previa:**
+
 [Retar](https://ibb.co/R85pkLQ)
 
 [Usuario ya en un juego](https://ibb.co/9kG8NwYS)
