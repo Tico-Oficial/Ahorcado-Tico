@@ -6,7 +6,7 @@ $var[palabra;$toLowercase[$trimSpace[$replaceText[$noMentionMessage;$splitText[1
 
 $onlyIf[$var[user]!=$authorID;❌ No podes jugar contra vos mismo]
 $try
-$onlyIf[$and[$charCount[$var[palabra]]<16;$charCount[$var[palabra]]>3;$var[pista]!=;$var[palabra]!=;$var[user]!=]==true;]
+$onlyIf[$and[$charCount[$var[palabra]]<21;$charCount[$var[palabra]]>3;$var[pista]!=;$var[palabra]!=;$var[user]!=]==true;]
 $catch
 $description[**❌ Formato a seguir:**
 `$commandTrigger <tagg-user> <pista> <palabra (entre 4-20 caracteres)>`
