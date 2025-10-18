@@ -79,7 +79,6 @@ $var[loop-tico;$cropText[$repeatMessage[10;$repeatMessage[4;t]];$charCount[$json
 $eval[$replaceText[$var[loop-tico];t;
 $$c[]if[$$c[]splitText[$$c[]var[tico\]\]==$$c[]var[letra\]\]
 $$c[]jsonSetString[progreso\;$$c[]sub[$$c[]var[tico\]\;1\]\;$$c[]var[letra\]\]
-$$c[]var[cambio\;si\]
 $$c[]endif
 $$c[]var[tico\;$$c[]sum[$$c[]var[tico\]\;1\]\]
 ;-1]]
