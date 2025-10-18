@@ -100,7 +100,7 @@ $jsonSetString[racha;0]
 $jsonArrayAppend[incorrectas;$toTitleCase[$var[letra]]]
 $if[$json[vida]<=0]
 $var[juego;terminado]
-$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[$getTimestamp-$json[inicio]] segundos]
+$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[($getTimestamp - $json[inicio])%60] segundos]
 $var[estado;😥 Perdiste!!
 🗒️ La palabra era: `$toTitleCase[$json[palabra]]`]
 $endif
@@ -113,7 +113,7 @@ $newModal[modalah-$authorID;📝 Escribe una letra]
 $addTextInput[letra;short;Letra;0;1;yes;;]
 $elseif[$splitText[1]==rendirseah]
 $var[juego;terminado]
-$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[$getTimestamp-$json[inicio]] segundos]
+$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[($getTimestamp - $json[inicio])%60] segundos]
 $var[estado;🏳️ Te rendiste!!!
 🗒️ La palabra era: `$toTitleCase[$json[palabra]]`]
 $endif
