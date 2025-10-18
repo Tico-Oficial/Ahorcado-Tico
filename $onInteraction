@@ -1,0 +1,149 @@
+$nomention
+$onlyIf[$checkContains[$customID;jugarahorcado;modalah;rendirseah;responderah]==true;]
+$textSplit[$customID;-]
+$onlyIf[$splitText[2]==$authorID;]
+$jsonParse[$getUserVar[ah-tico]]
+$if[$and[$splitText[1]==jugarahorcado;$json[id]==$splitText[3]]==true]
+$onlyIf[$json[inicio]==;]
+$var[estado;✅ Juego iniciado]
+$jsonSetString[racha;0]
+$jsonSetString[racha-negativa;0]
+$jsonSetString[juego;https://discord.com/channels/$guildID/$channelID/$messageID]
+$jsonSetString[inicio;$getTimestamp]
+$elseif[$and[$splitText[1]==jugarahorcado;$json[id]!=$splitText[3]]==true]
+$stop
+$endif
+$var[0;
++----------+
+|          |
+|          O  
+|         /|\ 
+|         / \ 
+|      
+=========]
+$var[1;
++----------+
+|          |
+|          O  
+|         /|\ 
+|         /  
+|      
+=========]
+$var[2;
++----------+
+|          |
+|          O  
+|         /|\ 
+|           
+|      
+=========]
+$var[3;
++----------+
+|          |
+|          O  
+|         /| 
+|          
+|      
+=========]
+$var[4;
++----------+
+|          |
+|          O  
+|          | 
+|          
+|      
+=========]
+$var[5;
++----------+
+|          |
+|          O  
+|          
+|          
+|      
+=========]
+$var[6;
++----------+
+|          |
+|          
+|         
+|          
+|      
+=========]
+$var[tiempo;**⏰ Jugando:** <t:$json[inicio]:R>]
+$if[$splitText[1]==modalah]
+$var[letra;$toLowercase[$input[letra]]]
+$if[$checkContains[$json[palabra];$var[letra]]==true]
+$var[tico;1]
+$textSplit[$json[palabra];]
+$var[loop-tico;$cropText[$repeatMessage[10;$repeatMessage[4;t]];$charCount[$json[palabra]];]]
+$eval[$replaceText[$var[loop-tico];t;
+$$c[]if[$$c[]splitText[$$c[]var[tico\]\]==$$c[]var[letra\]\]
+$$c[]jsonSetString[progreso\;$$c[]sub[$$c[]var[tico\]\;1\]\;$$c[]var[letra\]\]
+$$c[]var[cambio\;si\]
+$$c[]endif
+$$c[]var[tico\;$$c[]sum[$$c[]var[tico\]\;1\]\]
+;-1]]
+
+$jsonSetString[racha;$sum[$json[racha];1]]
+$var[estado;✅ Letra correcta **x$json[racha]**]
+$jsonSetString[racha-negativa;0]
+
+$if[$json[palabra]==$replaceText[$jsonJoinArray[progreso;];-; ;-1]]
+$var[juego;terminado]
+$var[estado;🥳 Ganaste!!]
+$endif
+
+$elseif[$checkContains[$toLowercase[$json[incorrectas]];$var[letra]]==false]
+$jsonSetString[racha-negativa;$sum[$json[racha-negativa];1]]
+$var[estado;❌ Letra incorrecta **x$json[racha-negativa]**]
+$jsonSetString[vida;$sub[$json[vida];1]]
+$jsonSetString[racha;0]
+$jsonArrayAppend[incorrectas;$toTitleCase[$var[letra]]]
+$if[$json[vida]<=0]
+$var[juego;terminado]
+$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[$getTimestamp-$json[inicio]] segundos]
+$var[estado;😥 Perdiste!!
+🗒️ La palabra era: `$toTitleCase[$json[palabra]]`]
+$endif
+$else
+$var[estado;❌ Letra ya ingresada]
+$endif
+
+$elseif[$splitText[1]==responderah]
+$newModal[modalah-$authorID;📝 Escribe una letra]
+$addTextInput[letra;short;Letra;0;1;yes;;]
+$elseif[$splitText[1]==rendirseah]
+$var[juego;terminado]
+$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[$getTimestamp-$json[inicio]] segundos]
+$var[estado;🏳️ Te rendiste!!!
+🗒️ La palabra era: `$toTitleCase[$json[palabra]]`]
+$endif
+$setUserVar[ah-tico;$jsonStringify]
+
+$if[$splitText[1]!=responderah]
+$editMessage[$channelID;$messageID;;
+😵 Ahorcado;
+**Jugador:** [$nickname\](https://discord.com/users/$authorID)
+**Vidas:** $repeatMessage[$json[vida];♥️]
+
+$var[tiempo]
+**💡 Pista:** $json[pista]
+**❌ Incorrectas:** $replaceText[$replaceText[$toTitleCase[$json[incorrectas]];\];;-1];[;;-1]
+
+`$replaceText[$toTitleCase[$jsonJoinArray[progreso; ]];-;  ;-1]`
+**📌 Estado:** $var[estado]
+$var[$json[vida]];
+6e00ff;Juego de: $username]
+$endif
+$async[Name]
+$if[$splitText[1]==jugarahorcado]
+$removeAllComponents[$messageID]
+$addButton[no;responderah-$authorID;Responder;success;no;📝;$messageID]
+$addButton[no;rendirseah-$authorID;Rendirse;secondary;no;🏳️;$messageID]
+$endif
+$if[$var[juego]==terminado]
+$removeAllComponents[$messageID]
+$resetUserVar[ah-tico;$authorID]
+$endif
+$endasync
+$await[Name]
