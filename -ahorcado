@@ -1,0 +1,46 @@
+$nomention
+$var[user;$mentioned[1]]
+$textSplit[$noMentionMessage; ]
+$var[pista;$toTitleCase[$trimSpace[$splitText[1]]]]
+$var[palabra;$toLowercase[$trimSpace[$replaceText[$noMentionMessage;$splitText[1];;1]]]]
+
+$onlyIf[$var[user]!=$authorID;❌ No podes jugar contra vos mismo]
+$try
+$onlyIf[$and[$charCount[$var[palabra]]<16;$charCount[$var[palabra]]>3;$var[pista]!=;$var[palabra]!=;$var[user]!=]==true;]
+$catch
+$description[**❌ Formato a seguir:**
+`$commandTrigger <tagg-user> <pista> <palabra (entre 4-20 caracteres)>`
+
+**Importante:**
+Para evitar errores, en la pista procura que la misma sea de una única palabra 
+ejemplo: "futbol"]
+$color[ff0000]
+$stop
+$endtry
+
+$jsonParse[$getUserVar[ah-tico;$var[user]]]
+$onlyIf[$json[inicio]==;❌ Este usuario ya está en un juego: $json[juego]]
+$jsonSetString[vida;6]
+
+$var[loop-tico;$cropText[$repeatMessage[10;$repeatMessage[4;t]];$charCount[$var[palabra]];]]
+$var[tico;1]
+$textSplit[$var[palabra];]
+$eval[$replaceText[$var[loop-tico];t;
+$$c[]if[$$c[]splitText[$$c[]var[tico\]\]!= \]
+$$c[]jsonArrayAppend[progreso\;_\]
+$$c[]else
+$$c[]jsonArrayAppend[progreso\;-\]
+$$c[]endif
+$$c[]var[tico\;$$c[]sum[$$c[]var[tico\]\;1\]\]
+;-1]]
+
+$description[😵 <@$var[user]> Te han retado a jugar al ahorcado
+**Retador:** <@$authorID>
+**Pista:** $var[pista]]
+$color[6e00ff]
+$addButton[no;jugarahorcado-$var[user]-$random[0;999];Aceptar;success;no;;]
+$jsonSetString[palabra;$var[palabra]]
+$jsonSetString[pista;$var[pista]]
+$jsonSetString[id;$random[0;999]]
+$deletecommand
+$setUserVar[ah-tico;$jsonStringify;$var[user]]
