@@ -90,6 +90,7 @@ $jsonSetString[racha-negativa;0]
 $if[$json[palabra]==$replaceText[$jsonJoinArray[progreso;];-; ;-1]]
 $var[juego;terminado]
 $var[estado;🥳 Ganaste!!]
+$var[tiempo;**⏰ Jugó:** $calculate[($getTimestamp-$json[inicio])/60] minutos, $calculate[($getTimestamp - $json[inicio])%60] segundos]
 $endif
 
 $elseif[$checkContains[$toLowercase[$json[incorrectas]];$var[letra]]==false]
